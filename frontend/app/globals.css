@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@import "tailwindcss";
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(1.1); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 18s infinite ease-in-out;
+}
+
+.delay-1000 {
+  animation-delay: 1s;
+}
+@keyframes spread {
+  0% {
+    transform: translateX(-50%) scaleX(0);
+  }
+  50% {
+    transform: translateX(-50%) scaleX(1);
+  }
+  100% {
+    transform: translateX(-50%) scaleX(0);
+  }
+}
+
+.animate-spread {
+  animation: spread 1.4s ease-in-out infinite;
+  transform-origin: center;
+}
