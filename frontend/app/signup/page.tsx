@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, UserPlus } from 'lucide-react';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  async function handleUpload(e: FormEvent<HTMLFormElement>){
+  async function handleUpload(e: any){
     e.preventDefault()
     setIsLoading(true)
     try{

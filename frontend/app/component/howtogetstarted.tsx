@@ -86,7 +86,7 @@ export default function GetStarted() {
           {steps.map((step, index) => (
             <motion.div
   key={index}
-  variants={item}
+  // variants={item}
   className={`group relative rounded-3xl border backdrop-blur-xl p-8 transition-all duration-300 
   ${
     index === 1
