@@ -68,7 +68,7 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-5 justify-center md:justify-start"
           >
             <Link
-              href="/register"
+              href="/signup"
               className="group relative px-10 py-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl font-bold text-lg shadow-2xl shadow-purple-500/30 hover:shadow-purple-600/50 hover:scale-[1.03] transition-all duration-400 overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-3">

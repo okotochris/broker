@@ -167,6 +167,7 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+      <div className='h-24'></div>
     </>
   );
 }

@@ -50,7 +50,7 @@ export default function SignupPage() {
       <div className="w-full max-w-md bg-zinc-900 p-8 rounded-3xl shadow-xl border border-zinc-800">
         
         {/* Logo */}
-        <div className="flex flex-col items-center mb-10">
+        <div className="flex flex-col items-center mb-10 text-white">
           <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-3xl">
             🚀
           </div>
@@ -59,7 +59,7 @@ export default function SignupPage() {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-semibold mb-6 text-center">Sign Up</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-center text-white">Sign Up</h2>
 
         {/* Form */}
         <form className="space-y-5">
