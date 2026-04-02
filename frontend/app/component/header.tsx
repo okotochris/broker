@@ -5,9 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
+type User = {
+  id: string;
+  email: string;
+  name: string;
+};
+
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [user, setUser] = useState<User | null>(null);
   const toggleMenu = () => setIsOpen(!isOpen);
 
   // Prevent body scroll when mobile menu is open
@@ -34,6 +41,22 @@ export default function Header() {
       document.body.style.top = '';
     };
   }, [isOpen]);
+
+  useEffect(()=>{
+    async function fetchUser() {
+      try {
+        const res = localStorage.getItem('user');
+        
+        if (res) {
+          setUser(JSON.parse(res));
+          console.log('user found:', JSON.parse(res));
+        }
+      } catch (error) {
+        console.log('user not login');
+      }
+    }
+    fetchUser();
+  }, []);
 
   const menuVariants = {
     closed: { x: '100%', opacity: 0, transition: { duration: 0.4, ease: 'easeInOut' } },
@@ -91,18 +114,23 @@ export default function Header() {
 
           {/* Desktop auth */}
           <div className="hidden md:flex items-center gap-4">
-            <Link
-              href="/login"
-              className="px-5 py-2 rounded-full border border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all"
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full font-medium text-white hover:brightness-110 hover:shadow-lg hover:shadow-purple-500/30 transition-all"
-            >
-              Get Started
-            </Link>
+          {user ? (
+                <>
+                <div className='bg-blue-600 p-2 rounded-full text-white text-sm'>
+                    <Link href="/dashboard">Dashboard</Link>
+                </div>
+                  <span>
+                    Welcome, {user.name?.split(" ")[0] || "User"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <div className='bg-blue-600 p-2 px-5 rounded-full text-white text-sm'>
+                    <Link href="/login">Login</Link>
+                  </div>
+                  <Link href="/signup">Get Started</Link>
+                </>
+              )}
           </div>
 
           {/* Mobile hamburger */}

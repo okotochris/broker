@@ -114,7 +114,7 @@ export default function AboutPage() {
     <motion.div
       key={currentCoinIndex}
       initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 0.15, scale: 1 }}
+      animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 1.2 }}
       transition={{ duration: 1.2, ease: "easeInOut" }}
       className="absolute inset-0 flex items-center justify-center z-10"

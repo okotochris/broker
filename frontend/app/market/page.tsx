@@ -146,7 +146,7 @@ export default function MarketPage() {
 
         <div className="relative max-w-7xl mx-auto z-10">
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0.15, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >

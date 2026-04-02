@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, UserPlus } from 'lucide-react';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  async function handleUpload(e: any){
+  async function handleUpload(e: React.FormEvent){
     e.preventDefault()
     setIsLoading(true)
     try{
@@ -35,7 +35,7 @@ export default function SignupPage() {
             setError(data.message || 'An error occurred')
             return;
         }
-        localStorage.setItem('user', JSON.stringify(data))
+        localStorage.setItem('user', JSON.stringify(data.user))
         router.push('/dashboard')
     }
     catch(err){
@@ -63,7 +63,7 @@ export default function SignupPage() {
 
         {/* Form */}
         <form className="space-y-5">
-
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
           {/* Name */}
           <div>
             <label className="text-sm text-zinc-400">Full Name</label>
@@ -71,7 +71,7 @@ export default function SignupPage() {
               onChange={(e)=>setForm({...form, fullname:e.target.value})}
               type="text"
               placeholder="John Doe"
-              className="w-full mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
+              className="w-full mt-2 text-gray-300 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
             />
           </div>
 
@@ -83,7 +83,7 @@ export default function SignupPage() {
               onChange={(e)=>setForm({...form, email:e.target.value})}
               required
               placeholder="you@example.com"
-              className="w-full mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
+              className="w-full  text-gray-300 mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
             />
             {isEmailUsed && error}
           </div>
@@ -97,7 +97,7 @@ export default function SignupPage() {
                 onChange={(e)=>setForm({...form, password:e.target.value})}
                 required
                 placeholder="••••••••"
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
+                className="w-full  text-gray-300 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
               />
               <button
                 type="button"
