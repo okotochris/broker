@@ -13,7 +13,7 @@ export default function LoginPage() {
         
         {/* Logo */}
         <div className="flex flex-col items-center mb-10 text-white">
-          <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-3xl">
+          <div className="w-14 h-14 bg-linear-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-3xl">
             🚀
           </div>
           <h1 className="text-3xl font-bold mt-4">Broka</h1>

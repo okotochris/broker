@@ -20,12 +20,13 @@ mongoose.connect(mongoseString)
 })
 
 app.post('/api/login', async (req, res) => {
+  const result = await User.find()
+
   const { email, password } = req.body;
 
   try {
     // 1. Find user by email
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -36,15 +37,9 @@ app.post('/api/login', async (req, res) => {
     if (!isMatch) {
       return res.status(403).json({ message: "Incorrect password" });
     }
-
-    // 3. Success
     res.status(200).json({
       message: "Login successful",
-      user: {
-        id: user._id,
-        email: user.email,
-        name: user.name
-      }
+      user: user
     });
 
   } catch (err) {
@@ -56,7 +51,7 @@ app.post('/api/login', async (req, res) => {
 
 app.post('/api/signup', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { fullname, email, password } = req.body;
 
     // 1. Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -67,11 +62,19 @@ app.post('/api/signup', async (req, res) => {
     // 2. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 3. Create user
-    const newUser = new User({
-      name,
+      const newUser = new User({
+      name: fullname,
       email,
-      password: hashedPassword
+      password: hashedPassword,   // don’t forget to save the hashed password!
+      investment: [
+        {
+          amountInvest: 0,
+          totalProfit: 0,
+          usdValue: 0,
+          ethValue:0,
+          btcValue:0,
+        }
+      ]
     });
 
     await newUser.save();
@@ -96,7 +99,6 @@ app.post('/api/signup', async (req, res) => {
 
 app.get('/api/dashboard', async(req, res)=>{
     const data = await User.find()
-    console.log(data)
 })
 
 const PORT = process.env.PORT || 3000

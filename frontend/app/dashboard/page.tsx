@@ -112,13 +112,13 @@ export default function Dashboard() {
       <div className="flex-1 md:ml-72 p-6 md:p-8 mt-16 md:mt-0">
 
         {/* TOP BAR */}
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex flex-col md:flex-row md:justify-between items-center mb-10">
           <div>
             <h1 className="text-3xl font-bold">Dashboard</h1>
             <p className="text-zinc-400">Welcome back, {user.name.split(" ")[0]}</p>
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <div className="bg-zinc-900 px-5 py-2.5 rounded-2xl flex items-center gap-2">
               <div className="text-emerald-400">•</div>
               <span className="text-sm">Market Open</span>
