@@ -83,7 +83,8 @@ app.post('/api/signup', async (req, res) => {
     const userResponse = {
       id: newUser._id,
       name: newUser.name,
-      email: newUser.email
+      email: newUser.email,
+      investment: newUser.investment
     };
 
     res.status(200).json({
