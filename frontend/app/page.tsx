@@ -130,7 +130,7 @@ export default function Home() {
             Join thousands of traders already using Broka to trade smarter.
           </p>
           <Link
-            href="/register"
+            href="/signin"
             className="inline-flex items-center gap-3 px-10 py-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-xl font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-2xl shadow-purple-500/20"
           >
             Create Free Account <ArrowRight className="w-6 h-6" />

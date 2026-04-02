@@ -128,7 +128,7 @@ export default function Header() {
                   <div className='bg-blue-600 p-2 px-5 rounded-full text-white text-sm'>
                     <Link href="/login">Login</Link>
                   </div>
-                  <Link href="/signup">Get Started</Link>
+                  <Link href="/dashboard">Get Started</Link>
                 </>
               )}
           </div>

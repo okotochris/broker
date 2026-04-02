@@ -159,7 +159,7 @@ export default function GetStarted() {
         {/* CTA */}
         <div className="text-center mt-16">
           <Link
-            href="/register"
+            href="/dashboard"
             className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-semibold text-lg 
             bg-gradient-to-r from-blue-600 to-purple-600 
             hover:scale-105 hover:brightness-110 transition-all 

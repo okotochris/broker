@@ -85,7 +85,6 @@ export default function Footer() {
               <li><Link href="/about" className="hover:text-blue-400 transition">About Us</Link></li>
               <li><Link href="/careers" className="hover:text-blue-400 transition">Careers</Link></li>
               <li><Link href="/blog" className="hover:text-blue-400 transition">Blog</Link></li>
-              <li><Link href="/press" className="hover:text-blue-400 transition">Press</Link></li>
               <li><Link href="/contact" className="hover:text-blue-400 transition">Contact</Link></li>
             </ul>
           </motion.div>
@@ -97,8 +96,7 @@ export default function Footer() {
               <li><Link href="/academy" className="hover:text-blue-400 transition">Crypto Academy</Link></li>
               <li><Link href="/fees" className="hover:text-blue-400 transition">Fees</Link></li>
               <li><Link href="/security" className="hover:text-blue-400 transition">Security</Link></li>
-              <li><Link href="/api" className="hover:text-blue-400 transition">API</Link></li>
-              <li><Link href="/status" className="hover:text-blue-400 transition">Status</Link></li>
+             
             </ul>
           </motion.div>
 
@@ -141,8 +139,7 @@ export default function Footer() {
           {/* Trust Badges (placeholders – replace with real SVGs/icons) */}
           <div className="flex gap-4 text-xs opacity-70">
             <span className="px-3 py-1 bg-zinc-800/50 rounded-full">Secure</span>
-            <span className="px-3 py-1 bg-zinc-800/50 rounded-full">2FA</span>
-            <span className="px-3 py-1 bg-zinc-800/50 rounded-full">Regulated</span>
+            
           </div>
         </motion.div>
       </div>

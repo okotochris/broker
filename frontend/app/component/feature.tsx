@@ -169,13 +169,7 @@ export default function FeaturedFeatures() {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <a 
-            href="#get-started"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-semibold rounded-2xl transition-all hover:shadow-2xl hover:shadow-orange-500/30"
-          >
-            Explore All Features
-            <ChevronRight className="w-5 h-5" />
-          </a>
+          
         </motion.div>
       </div>
     </section>
