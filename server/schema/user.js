@@ -4,6 +4,10 @@ const userModel = new mongoose.Schema({
     name:String,
     password:String,
     email:String,
+    role: {
+        type: String,
+        default: 'user'
+    },
     investment:[
         {
         amountInvest:{
