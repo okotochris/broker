@@ -72,7 +72,7 @@ export default function Wallet() {
         >
           <WalletIcon className="w-20 h-20 text-blue-400 mx-auto mb-6" />
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
-            Broka Wallet
+            Capitextradecompany Wallet
           </h1>
           <p className="text-xl text-zinc-300 mb-8">
             Secure, fast, and easy-to-use cryptocurrency wallet. Store, send, and manage your digital assets.
@@ -265,7 +265,7 @@ export default function Wallet() {
         >
           <h2 className="text-4xl font-bold mb-6">Secure Your Assets Today</h2>
           <p className="text-xl text-zinc-300 mb-8">
-            Join millions of users who trust Broka Wallet to manage their crypto.
+            Join millions of users who trust Capitextradecompany Wallet to manage their crypto.
           </p>
           <Link
             href="/signup"

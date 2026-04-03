@@ -236,7 +236,7 @@ export default function Fees() {
         >
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { platform: 'Broka', spotFee: '0.10%', futuresFee: '0.05%', hidden: 'No' },
+              { platform: 'Capitextradecompany', spotFee: '0.10%', futuresFee: '0.05%', hidden: 'No' },
               { platform: 'Binance', spotFee: '0.10%', futuresFee: '0.05%', hidden: 'Some' },
               { platform: 'Kraken', spotFee: '0.16%', futuresFee: '0.05%', hidden: 'Some' },
               { platform: 'Coinbase', spotFee: '0.50%', futuresFee: 'N/A', hidden: 'Yes' },
@@ -247,7 +247,7 @@ export default function Fees() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.1 }}
                 className={`p-6 rounded-lg border ${
-                  row.platform === 'Broka'
+                  row.platform === 'Capitextradecompany'
                     ? 'bg-yellow-500/10 border-yellow-500/50'
                     : 'bg-zinc-800/30 border-zinc-700/50'
                 }`}
@@ -281,7 +281,7 @@ export default function Fees() {
         >
           <h2 className="text-4xl font-bold mb-6">Start Trading Today</h2>
           <p className="text-xl text-zinc-300 mb-8">
-            Get competitive fees and start your crypto trading journey with Broka.
+            Get competitive fees and start your crypto trading journey with Capitextradecompany.
           </p>
           <Link
             href="/signup"

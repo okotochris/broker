@@ -278,7 +278,7 @@ export default function Security() {
               title: 'Report Vulnerabilities',
               description: 'Found a security issue? Report it to our security team.',
               action: 'Report',
-              email: 'security@broka.com',
+              email: 'security@capitextradecompany.com',
             },
             {
               icon: Eye,
@@ -322,7 +322,7 @@ export default function Security() {
         >
           <h2 className="text-4xl font-bold mb-6">Trade with Confidence</h2>
           <p className="text-xl text-zinc-300 mb-8">
-            Join thousands of users who trust Broka&apos;s security infrastructure.
+            Join thousands of users who trust Capitextradecompany&apos;s security infrastructure.
           </p>
           <Link
             href="/signup"

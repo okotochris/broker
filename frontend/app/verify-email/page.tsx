@@ -87,7 +87,7 @@ export default function VerifyEmail() {
 
           <h1 className="text-4xl font-bold mb-4">Email Verified!</h1>
           <p className="text-lg text-zinc-300 mb-8">
-            Your email has been successfully verified. You can now access your Broka account and start trading.
+            Your email has been successfully verified. You can now access your Capitextradecompany account and start trading.
           </p>
 
           <Link

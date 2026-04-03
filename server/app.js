@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const cors = require('cors')
 const cron = require('node-cron')
 const User = require('./schema/user')
+const sendEmail = require('./email/brevo')
 const app = express()
 
 //MIDLEWARE
@@ -65,10 +66,8 @@ cron.schedule('0 0 * * 0', async () => {
 });
 
 
-app.post('/api/login', async (req, res) => {
-  const result = await User.find()
-
-  const { email, password } = req.body;
+app.post('/api/login/request-otp', async (req, res) => {
+  const { email } = req.body;
 
   try {
     // 1. Find user by email
@@ -77,12 +76,65 @@ app.post('/api/login', async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // 2. Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
+    // 2. Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    if (!isMatch) {
-      return res.status(403).json({ message: "Incorrect password" });
+    // 3. Save OTP to user
+    user.otp = otp;
+    user.otpExpiry = otpExpiry;
+    await user.save();
+
+    // 4. Send OTP email
+    const msg = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Login to Capitextradecompany</h2>
+        <p>Your one-time password (OTP) is:</p>
+        <h1 style="color: #f97316; font-size: 32px;">${otp}</h1>
+        <p>This code will expire in 10 minutes.</p>
+        <p>If you didn't request this, please ignore this email.</p>
+      </div>
+    `;
+    await sendEmail(email, msg);
+
+    res.status(200).json({ message: "OTP sent to your email" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post('/api/login/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    // 1. Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
+
+    // 2. Check if verified
+    if (!user.verified) {
+      return res.status(403).json({ message: "Account not verified. Please verify your email first." });
+    }
+
+    // 3. Check OTP
+    if (!user.otp || user.otp !== otp) {
+      return res.status(403).json({ message: "Invalid OTP" });
+    }
+
+    // 3. Check expiry
+    if (new Date() > user.otpExpiry) {
+      return res.status(403).json({ message: "OTP expired" });
+    }
+
+    // 4. Clear OTP
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+    await user.save();
+
     res.status(200).json({
       message: "Login successful",
       user: {
@@ -101,7 +153,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 
-app.post('/api/signup', async (req, res) => {
+app.post('/api/signup/request-otp', async (req, res) => {
   try {
     const { fullname, email, password } = req.body;
 
@@ -115,13 +167,21 @@ app.post('/api/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 3. Determine role
-    const role = email === 'admin@broker.com' ? 'admin' : 'user';
+    const role = email === 'admin@capitextradecompany.com' ? 'admin' : 'user';
 
-      const newUser = new User({
+    // 4. Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    // 5. Create user with verified: false
+    const newUser = new User({
       name: fullname,
       email,
       password: hashedPassword,
       role,
+      verified: false,
+      otp,
+      otpExpiry,
       investment: [
         {
           amountInvest: 0,
@@ -135,23 +195,71 @@ app.post('/api/signup', async (req, res) => {
 
     await newUser.save();
 
-    // 4. Remove password before sending response
-    const userResponse = {
-      id: newUser._id,
-      name: newUser.name,
-      email: newUser.email,
-      role: newUser.role,
-      investment: newUser.investment
-    };
+    // 6. Send OTP email
+    const msg = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Welcome to Capitextradecompany</h2>
+        <p>Your verification code is:</p>
+        <h1 style="color: #f97316; font-size: 32px;">${otp}</h1>
+        <p>Please enter this code to complete your registration.</p>
+        <p>This code will expire in 10 minutes.</p>
+      </div>
+    `;
+    await sendEmail(email, msg);
+
+    res.status(200).json({ message: "OTP sent to your email" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post('/api/signup/verify-otp', async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    // 1. Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // 2. Check if already verified
+    if (user.verified) {
+      return res.status(400).json({ message: "Account already verified" });
+    }
+
+    // 3. Check OTP
+    if (!user.otp || user.otp !== otp) {
+      return res.status(403).json({ message: "Invalid OTP" });
+    }
+
+    // 4. Check expiry
+    if (new Date() > user.otpExpiry) {
+      return res.status(403).json({ message: "OTP expired" });
+    }
+
+    // 5. Verify user
+    user.verified = true;
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+    await user.save();
 
     res.status(200).json({
-      message: "Signup successful",
-      user: userResponse
+      message: "Account verified successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        investment: user.investment
+      }
     });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -244,4 +352,9 @@ app.get('/api/user/:id', async (req, res) => {
 const PORT = process.env.PORT || 3000
 app.listen(PORT, ()=>{
     console.log(`App listening on ${PORT}`)
+    User.deleteMany({}).then(()=>{
+        console.log("All users deleted")
+    }).catch(err=>{
+        console.log("Error deleting users:", err)
+    })
 })

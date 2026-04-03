@@ -77,7 +77,7 @@ export default function Staking() {
             Stake and Earn
           </h1>
           <p className="text-xl text-zinc-300 mb-8">
-            Generate passive income by staking your crypto with Broka. Earn up to 15.8% APY on your holdings.
+            Generate passive income by staking your crypto with Capitextradecompany. Earn up to 15.8% APY on your holdings.
           </p>
           <Link
             href="/signup"
@@ -95,7 +95,7 @@ export default function Staking() {
           whileInView={{ opacity: 1 }}
           className="text-4xl font-bold mb-12 text-center"
         >
-          Why Stake with Broka?
+          Why Stake with Capitextradecompany?
         </motion.h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {benefits.map((benefit, i) => (
@@ -279,7 +279,7 @@ export default function Staking() {
         >
           <h2 className="text-4xl font-bold mb-6">Start Earning Today</h2>
           <p className="text-xl text-zinc-300 mb-8">
-            Join thousands of users earning passive income through Broka Staking.
+            Join thousands of users earning passive income through Capitextradecompany Staking.
           </p>
           <Link
             href="/signup"

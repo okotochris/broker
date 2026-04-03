@@ -72,7 +72,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-5xl font-bold text-center mb-20"
           >
-            Why Traders Choose Broka
+            Why Traders Choose Capitextradecompany
           </motion.h2>
 
           <motion.div
@@ -127,7 +127,7 @@ export default function Home() {
             Ready to Level Up Your Crypto Game?
           </h2>
           <p className="text-xl text-zinc-400 mb-12 max-w-2xl mx-auto">
-            Join thousands of traders already using Broka to trade smarter.
+            Join thousands of traders already using Capitextradecompany to trade smarter.
           </p>
           <Link
             href="/signin"

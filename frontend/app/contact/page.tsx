@@ -36,7 +36,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'Email',
-      value: 'support@broka.com',
+      value: 'support@capitextradecompany.com',
       description: 'We reply within 24 hours',
     },
     {
@@ -275,7 +275,7 @@ export default function ContactPage() {
                   <span className="font-semibold text-blue-400">Live Chat:</span> Available on our website
                 </p>
                 <p className="text-sm text-zinc-400">
-                  <span className="font-semibold text-blue-400">Email:</span> support@broka.com
+                  <span className="font-semibold text-blue-400">Email:</span> support@capitextradecompany.com
                 </p>
                 <p className="text-sm text-zinc-400">
                   <span className="font-semibold text-blue-400">Phone:</span> +1 (555) 123-4567

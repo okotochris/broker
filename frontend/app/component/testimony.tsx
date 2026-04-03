@@ -10,7 +10,7 @@ const testimonials = [
     role: "Full-time Crypto Trader",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     rating: 5,
-    text: "Broka has completely changed how I trade. The real-time data is incredibly accurate, and the execution speed is unmatched. I've never felt more confident managing my portfolio.",
+    text: "Capitextradecompany has completely changed how I trade. The real-time data is incredibly accurate, and the execution speed is unmatched. I've never felt more confident managing my portfolio.",
     country: "Singapore"
   },
   {
@@ -18,7 +18,7 @@ const testimonials = [
     role: "Freelance Designer & Investor",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face",
     rating: 5,
-    text: "As a beginner, I was nervous about crypto. Broka made everything so simple and secure. The educational tools and instant notifications helped me make my first profitable trades.",
+    text: "As a beginner, I was nervous about crypto. Capitextradecompany made everything so simple and secure. The educational tools and instant notifications helped me make my first profitable trades.",
     country: "Nigeria"
   },
   {
@@ -54,7 +54,7 @@ export default function Testimonials() {
             Trusted by Traders Worldwide
           </motion.h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Do not just take our word for it — hear from real users who trade with Broka every day.
+            Do not just take our word for it — hear from real users who trade with Capitextradecompany every day.
           </p>
         </div>
 

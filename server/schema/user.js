@@ -34,6 +34,12 @@ const userModel = new mongoose.Schema({
     ],
     privateKey:String,
     publicKey:String,
+    otp: String,
+    otpExpiry: Date,
+    verified: {
+        type: Boolean,
+        default: false
+    },
     
 }, {timestamps:true})
 

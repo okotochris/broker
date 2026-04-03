@@ -62,9 +62,12 @@ export default function TopCryptos() {
 
   // ✅ Initial + auto refresh
   useEffect(() => {
-    fetchCoins();
+   async function loadData() {
+     fetchCoins();
     const interval = setInterval(fetchCoins, 30000);
     return () => clearInterval(interval);
+   }
+    loadData();
   }, []);
 
   // ✅ Animation
@@ -143,7 +146,7 @@ export default function TopCryptos() {
                     {/* Price */}
                     <div className="flex justify-between items-center mb-2">
                       <p className="text-lg font-bold">
-                        ₦{(coin.current_price * USD_TO_NGN).toLocaleString()}
+                        ${coin.current_price.toLocaleString()}
                       </p>
 
                       <span
