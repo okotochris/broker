@@ -64,7 +64,7 @@ export default function Careers() {
           whileInView={{ opacity: 1 }}
           className="text-4xl font-bold mb-12 text-center"
         >
-          Why Join Capitextradecompany?
+          Why Join pulseMarket?
         </motion.h2>
         <div className="grid md:grid-cols-3 gap-8">
           {benefits.map((benefit, i) => (
@@ -132,7 +132,7 @@ export default function Careers() {
             Send us your resume and let us know what you&apos;re interested in. We are always looking for talented people.
           </p>
           <Link
-            href="mailto:careers@capitextradecompany.com"
+            href="mailto:careers@pulsemarketio.com"
             className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-semibold hover:brightness-110 transition"
           >
             Send Your Resume

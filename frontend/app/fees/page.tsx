@@ -236,7 +236,7 @@ export default function Fees() {
         >
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { platform: 'Capitextradecompany', spotFee: '0.10%', futuresFee: '0.05%', hidden: 'No' },
+              { platform: 'pulseMarket', spotFee: '0.10%', futuresFee: '0.05%', hidden: 'No' },
               { platform: 'Binance', spotFee: '0.10%', futuresFee: '0.05%', hidden: 'Some' },
               { platform: 'Kraken', spotFee: '0.16%', futuresFee: '0.05%', hidden: 'Some' },
               { platform: 'Coinbase', spotFee: '0.50%', futuresFee: 'N/A', hidden: 'Yes' },
@@ -247,7 +247,7 @@ export default function Fees() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.1 }}
                 className={`p-6 rounded-lg border ${
-                  row.platform === 'Capitextradecompany'
+                  row.platform === 'pulseMarket'
                     ? 'bg-yellow-500/10 border-yellow-500/50'
                     : 'bg-zinc-800/30 border-zinc-700/50'
                 }`}

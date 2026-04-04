@@ -8,14 +8,16 @@ const coins = [
     symbol: 'BTC', 
     name: 'Bitcoin', 
     address: 'bc1qc3cmny3kwt605m9nzyw9a3306595mgtx2707tf',
-    color: 'bg-orange-500' 
+    color: 'bg-orange-500' ,
+    btc_barcode:'/btc_barcode.jpeg'
   },
  
   { 
     symbol: 'USDT', 
     name: 'Tether', 
     address: 'T0x2f05380c59e057892b5752b1a39409c43966e6c8',
-    color: 'bg-emerald-500' 
+    color: 'bg-emerald-500',
+    usdt_barcode:'/usdt_barcode.jpeg'
   },
 ];
 
@@ -98,7 +100,7 @@ export default function DepositPage() {
           {/* QR Code Placeholder */}
           <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 flex flex-col items-center justify-center">
             <div className="w-36 h-36 bg-zinc-800 rounded-2xl flex items-center justify-center border border-zinc-600 mb-3">
-              <span className="text-xs text-zinc-500 text-center">QR Code<br />for {selectedCoin.symbol}</span>
+              <img src={selectedCoin.symbol === 'BTC' ? selectedCoin.btc_barcode : selectedCoin.usdt_barcode} alt={`${selectedCoin.symbol} QR Code`} className="w-32 h-32 object-contain" />  
             </div>
             <p className="text-[10px] text-zinc-500">Scan with your wallet app</p>
           </div>

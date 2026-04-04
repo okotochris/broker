@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
     setLoginError(null);
 
     // Hardcoded credentials
-    if (username === 'admin' && password === 'admin123') {
+    if (username === 'info@pulsemarket.com' && password === 'Money2025@@') {
       localStorage.setItem('adminLoggedIn', 'true');
       setIsLoggedIn(true);
       loadUsers();

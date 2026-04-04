@@ -36,7 +36,7 @@ export default function Earn() {
     {
       number: '01',
       title: 'Sign Up',
-      description: 'Create your Capitextradecompany account and complete verification',
+      description: 'Create your pulseMarket account and complete verification',
     },
     {
       number: '02',
@@ -217,7 +217,7 @@ export default function Earn() {
         >
           <h2 className="text-4xl font-bold mb-6">Ready to Start Earning?</h2>
           <p className="text-xl text-zinc-300 mb-8">
-            Join thousands of users already earning passive income with Capitextradecompany.
+            Join thousands of users already earning passive income with pulseMarket.
           </p>
           <Link
             href="/signup"

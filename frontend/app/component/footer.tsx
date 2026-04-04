@@ -21,10 +21,10 @@ export default function Footer() {
   };
 
   const socialLinks = [
-    { icon: Twitter, href: 'https://twitter.com/capitextradecompany', label: 'Twitter' },
-    { icon: Send, href: 'https://t.me/capitextradecompany', label: 'Telegram' },
-    { icon: Linkedin, href: 'https://linkedin.com/company/capitextradecompany', label: 'LinkedIn' },
-    { icon: Github, href: 'https://github.com/capitextradecompany-app', label: 'GitHub' },
+    { icon: Twitter, href: 'https://twitter.com/pulsemarketio', label: 'Twitter' },
+    { icon: Send, href: 'https://t.me/pulsemarketio', label: 'Telegram' },
+    { icon: Linkedin, href: 'https://linkedin.com/company/pulsemarketio', label: 'LinkedIn' },
+    { icon: Github, href: 'https://github.com/pulsemarketio-app', label: 'GitHub' },
   ];
 
   return (
@@ -40,7 +40,7 @@ export default function Footer() {
           {/* Brand & Tagline */}
           <motion.div variants={childVariants} className="col-span-2 md:col-span-1">
             <Link href="/" className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-              Capitextradecompany
+              pulseMarket
             </Link>
             <p className="mt-4 text-zinc-500 text-sm leading-relaxed">
               Trade smarter. Grow faster. Secure crypto investments with real-time tools and institutional-grade security.
@@ -126,7 +126,7 @@ export default function Footer() {
           className="mt-16 pt-8 border-t border-zinc-800/50 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-zinc-500"
         >
           <div>
-            © {new Date().getFullYear()} Capitextradecompany. All rights reserved.
+            © {new Date().getFullYear()} pulseMarket. All rights reserved.
           </div>
 
           <div className="flex flex-wrap justify-center gap-6">

@@ -10,16 +10,16 @@ const testimonials = [
     role: "Full-time Crypto Trader",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     rating: 5,
-    text: "Capitextradecompany has completely changed how I trade. The real-time data is incredibly accurate, and the execution speed is unmatched. I've never felt more confident managing my portfolio.",
-    country: "Singapore"
+    text: "pulseMarket has completely changed how I trade. The real-time data is incredibly accurate, and the execution speed is unmatched. I've never felt more confident managing my portfolio.",
+    country: "San Francisco, USA"
   },
   {
     name: "Fatima Okoro",
     role: "Freelance Designer & Investor",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face",
     rating: 5,
-    text: "As a beginner, I was nervous about crypto. Capitextradecompany made everything so simple and secure. The educational tools and instant notifications helped me make my first profitable trades.",
-    country: "Nigeria"
+    text: "As a beginner, I was nervous about crypto. pulseMarket made everything so simple and secure. The educational tools and instant notifications helped me make my first profitable trades.",
+    country: "New York, USA"
   },
   {
     name: "Marcus Rodriguez",
@@ -27,7 +27,7 @@ const testimonials = [
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
     rating: 5,
     text: "The security features are top-notch. I love that I can connect my hardware wallet and still enjoy a smooth trading experience. Best platform I've used in 2026.",
-    country: "Mexico"
+    country: "Berlin, Germany"
   },
   {
     name: "Priya Sharma",
@@ -35,13 +35,13 @@ const testimonials = [
     image: "https://images.unsplash.com/photo-1580489944761-09be1ec59862?w=400&h=400&fit=crop&crop=face",
     rating: 5,
     text: "Low fees + lightning-fast trades = perfect combination. The portfolio analytics helped me improve my strategy significantly. Highly recommended!",
-    country: "India"
+    country: "London, UK"
   }
 ];
 
 export default function Testimonials() {
   return (
-    <section className="py-20 md:py-28 bg-white dark:bg-zinc-900">
+    <section className="py-20 md:py-28 bg-zinc-900">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
@@ -49,12 +49,12 @@ export default function Testimonials() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4"
+            className="text-4xl md:text-5xl font-bold text-white mb-4"
           >
             Trusted by Traders Worldwide
           </motion.h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Do not just take our word for it — hear from real users who trade with Capitextradecompany every day.
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            Do not just take our word for it — hear from real users who trade with pulseMarket every day.
           </p>
         </div>
 
@@ -68,11 +68,11 @@ export default function Testimonials() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -8 }}
-              className="bg-zinc-50 dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-3xl p-8 flex flex-col h-full group"
+              className=" bg-zinc-800 border text-gray-300 border-gray-100 dark:border-zinc-700 rounded-3xl p-8 flex flex-col h-full group"
             >
               {/* Quote Icon */}
               <div className="mb-6">
-                <Quote className="w-10 h-10 text-orange-500/30 group-hover:text-orange-500/50 transition-colors" />
+                <Quote className="w-10 h-10 group-hover:text-orange-500/50 transition-colors" />
               </div>
 
               {/* Rating */}
@@ -83,7 +83,7 @@ export default function Testimonials() {
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-8 flex-grow">
+              <p className="text-gray-300 leading-relaxed mb-8 flex-grow">
                 {testimonial.text}
               </p>
 
@@ -99,10 +99,10 @@ export default function Testimonials() {
                   />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                  <h4 className="font-semiboldtext-white">
                     {testimonial.name}
                   </h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-smtext-gray-400">
                     {testimonial.role} • {testimonial.country}
                   </p>
                 </div>

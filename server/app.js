@@ -88,7 +88,7 @@ app.post('/api/login/request-otp', async (req, res) => {
     // 4. Send OTP email
     const msg = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Login to Capitextradecompany</h2>
+        <h2>Login to pulseMarket</h2>
         <p>Your one-time password (OTP) is:</p>
         <h1 style="color: #f97316; font-size: 32px;">${otp}</h1>
         <p>This code will expire in 10 minutes.</p>
@@ -167,7 +167,7 @@ app.post('/api/signup/request-otp', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 3. Determine role
-    const role = email === 'admin@capitextradecompany.com' ? 'admin' : 'user';
+    const role = email === 'admin@pulsemarketio.com' ? 'admin' : 'user';
 
     // 4. Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -198,7 +198,7 @@ app.post('/api/signup/request-otp', async (req, res) => {
     // 6. Send OTP email
     const msg = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Welcome to Capitextradecompany</h2>
+        <h2>Welcome to pulseMarket</h2>
         <p>Your verification code is:</p>
         <h1 style="color: #f97316; font-size: 32px;">${otp}</h1>
         <p>Please enter this code to complete your registration.</p>
@@ -352,9 +352,5 @@ app.get('/api/user/:id', async (req, res) => {
 const PORT = process.env.PORT || 3000
 app.listen(PORT, ()=>{
     console.log(`App listening on ${PORT}`)
-    User.deleteMany({}).then(()=>{
-        console.log("All users deleted")
-    }).catch(err=>{
-        console.log("Error deleting users:", err)
-    })
+   
 })
