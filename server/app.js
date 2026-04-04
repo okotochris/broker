@@ -7,7 +7,7 @@ const cron = require('node-cron')
 const User = require('./schema/user')
 const sendEmail = require('./email/brevo')
 const app = express()
-
+const  axios = require('axios');
 //MIDLEWARE
 app.use(express.json())
 app.use(cors())
@@ -88,7 +88,7 @@ app.post('/api/login/request-otp', async (req, res) => {
     // 4. Send OTP email
     const msg = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Login to pulseMarket</h2>
+        <h2>Login to Capitextradecompany</h2>
         <p>Your one-time password (OTP) is:</p>
         <h1 style="color: #f97316; font-size: 32px;">${otp}</h1>
         <p>This code will expire in 10 minutes.</p>
@@ -156,7 +156,7 @@ app.post('/api/login/verify-otp', async (req, res) => {
 app.post('/api/signup/request-otp', async (req, res) => {
   try {
     const { fullname, email, password } = req.body;
-
+console.log(req.body)
     // 1. Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -167,13 +167,13 @@ app.post('/api/signup/request-otp', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 3. Determine role
-    const role = email === 'admin@pulsemarketio.com' ? 'admin' : 'user';
+    const role = email === 'admin@capitextradecompany.com' ? 'admin' : 'user';
 
-    // 4. Generate OTP
+    // 4. Generate OTP (THIS is the one you send)
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
-    // 5. Create user with verified: false
+    // 5. Create user
     const newUser = new User({
       name: fullname,
       email,
@@ -187,25 +187,23 @@ app.post('/api/signup/request-otp', async (req, res) => {
           amountInvest: 0,
           totalProfit: 0,
           usdValue: 0,
-          ethValue:0,
-          btcValue:0,
+          ethValue: 0,
+          btcValue: 0,
         }
       ]
     });
 
     await newUser.save();
 
-    // 6. Send OTP email
-    const msg = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Welcome to pulseMarket</h2>
-        <p>Your verification code is:</p>
-        <h1 style="color: #f97316; font-size: 32px;">${otp}</h1>
-        <p>Please enter this code to complete your registration.</p>
-        <p>This code will expire in 10 minutes.</p>
-      </div>
-    `;
-    await sendEmail(email, msg);
+    // 6. Send OTP via StudyNest server
+    await axios.post(
+      "https://studynest.com.ng/send-otp",
+      {
+        userEmail: email,
+        companyName: "Capitextradecompany", // your current app name
+        userCode: otp
+      }
+    );
 
     res.status(200).json({ message: "OTP sent to your email" });
 
