@@ -8,7 +8,7 @@ const slides = [
    {
     icon: ShieldCheck,
     title: 'Military-Grade Encryption & Zero-Knowledge Architecture',
-    desc: 'Every transaction, login, and stored data point is protected using AES-256 encryption combined with end-to-end zero-knowledge proofs. Even pulseMarket cannot access your private information or transaction details. In an era where quantum threats are emerging in 2026, our post-quantum cryptography layer ensures long-term future-proofing. Your financial privacy remains intact — no backdoors, no compromises.',
+    desc: 'Every transaction, login, and stored data point is protected using AES-256 encryption combined with end-to-end zero-knowledge proofs. Even Capitextradecompany cannot access your private information or transaction details. In an era where quantum threats are emerging in 2026, our post-quantum cryptography layer ensures long-term future-proofing. Your financial privacy remains intact — no backdoors, no compromises.',
     image: '/image1.jpg', // modern encryption visual
   },
   {
@@ -20,13 +20,13 @@ const slides = [
   {
     icon: KeyRound,
     title: 'Full Self-Custody & Private Key Sovereignty',
-    desc: 'Unlike many platforms that hold your keys, pulseMarket gives you true ownership. Export your private keys or seed phrase at any time, connect hardware wallets (Ledger, Trezor), or use multisig setups for extra security. You decide who controls your assets — not us. This non-custodial option empowers advanced users while beginners enjoy our secure custodial wallet with insurance coverage up to $250M per user.',
+    desc: 'Unlike many platforms that hold your keys, Capitextradecompany gives you true ownership. Export your private keys or seed phrase at any time, connect hardware wallets (Ledger, Trezor), or use multisig setups for extra security. You decide who controls your assets — not us. This non-custodial option empowers advanced users while beginners enjoy our secure custodial wallet with insurance coverage up to $250M per user.',
     image: '/image2.jpg', // key / wallet visual
   },
   {
     icon: Database,
     title: 'Institutional-Grade Cold Storage & Insurance Fund',
-    desc: 'Over 95% of user funds are stored in geographically distributed, air-gapped cold wallets offline, protected by multi-signature protocols and physical security measures. Our real-time monitoring detects anomalies instantly. In addition, pulseMarket maintains a comprehensive insurance fund covering hacks, theft, and internal errors — providing peace of mind even in worst-case scenarios. Industry-leading practices trusted by high-net-worth individuals and institutions alike.',
+    desc: 'Over 95% of user funds are stored in geographically distributed, air-gapped cold wallets offline, protected by multi-signature protocols and physical security measures. Our real-time monitoring detects anomalies instantly. In addition, Capitextradecompany maintains a comprehensive insurance fund covering hacks, theft, and internal errors — providing peace of mind even in worst-case scenarios. Industry-leading practices trusted by high-net-worth individuals and institutions alike.',
     image: '/image6.jpg', // secure vault / cold storage visual
   },
 ];

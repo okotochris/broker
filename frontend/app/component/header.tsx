@@ -96,7 +96,7 @@ export default function Header() {
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            pulseMarket
+            Capitextradecompany
           </Link>
 
           {/* Desktop nav */}

@@ -52,6 +52,7 @@ export default function Dashboard() {
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         const userData = JSON.parse(storedUser);
+       
         try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/${userData.id}`);
           if (res.ok) {
@@ -63,6 +64,8 @@ export default function Dashboard() {
         } catch {
           setUser(userData);
         }
+      }else{
+        router.push('/login');
       }
 
       // Fetch crypto prices
@@ -138,7 +141,7 @@ export default function Dashboard() {
 
       {/* Mobile Top */}
       <div className="md:hidden fixed top-0 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 px-4 py-4 flex justify-between">
-        <h1 className="text-lg font-semibold">pulseMarket</h1>
+        <h1 className="text-lg font-semibold">Capitextradecompany</h1>
         <button onClick={() => setSidebarOpen(!sidebarOpen)}>
           {sidebarOpen ? <X /> : <Menu />}
         </button>
@@ -154,7 +157,7 @@ export default function Dashboard() {
           }`}
         >
           <div className="p-6 flex flex-col h-full">
-            <h1 className="text-xl font-semibold mb-8">pulseMarket</h1>
+            <h1 className="text-xl font-semibold mb-8">Capitextradecompany</h1>
 
             <nav className="space-y-2">
               {menu.map((item) => (

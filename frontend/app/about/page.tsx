@@ -163,7 +163,7 @@ export default function AboutPage() {
         href="/register"
         className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl font-semibold text-lg hover:brightness-110 transition"
       >
-        Join pulseMarket Today
+        Join Capitextradecompany Today
       </Link>
       <Link 
         href="/markets"

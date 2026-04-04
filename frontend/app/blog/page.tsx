@@ -12,7 +12,7 @@ export default function Blog() {
     {
       id: 1,
       title: 'Getting Started with Crypto Trading: A Beginner\'s Guide',
-      excerpt: 'Learn the basics of cryptocurrency trading and how to make your first trade on pulseMarket.',
+      excerpt: 'Learn the basics of cryptocurrency trading and how to make your first trade on Capitextradecompany.',
       author: 'Sarah Chen',
       date: 'Mar 28, 2026',
       category: 'Trading',
@@ -81,10 +81,10 @@ export default function Blog() {
           className="max-w-4xl mx-auto text-center"
         >
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            pulseMarket Blog
+            Capitextradecompany Blog
           </h1>
           <p className="text-xl text-zinc-300 mb-8">
-            Market insights, trading tips, and crypto news from the pulseMarket team.
+            Market insights, trading tips, and crypto news from the Capitextradecompany team.
           </p>
         </motion.div>
       </section>

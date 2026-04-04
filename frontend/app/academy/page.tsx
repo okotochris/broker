@@ -118,7 +118,7 @@ export default function CryptoAcademy() {
           whileInView={{ opacity: 1 }}
           className="text-4xl font-bold mb-12 text-center"
         >
-          Why Learn with pulseMarket Academy?
+          Why Learn with Capitextradecompany Academy?
         </motion.h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, i) => (
@@ -288,7 +288,7 @@ export default function CryptoAcademy() {
         >
           <h2 className="text-4xl font-bold mb-6">Ready to Master Crypto?</h2>
           <p className="text-xl text-zinc-300 mb-8">
-            Join thousands of students learning with pulseMarket Academy.
+            Join thousands of students learning with Capitextradecompany Academy.
           </p>
           <Link
             href="/signup"

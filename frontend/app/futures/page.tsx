@@ -73,7 +73,7 @@ export default function Futures() {
             Futures Trading
           </h1>
           <p className="text-xl text-zinc-300 mb-8">
-            Trade Bitcoin, Ethereum, and 100+ altcoins with up to 125x leverage on pulseMarket Futures.
+            Trade Bitcoin, Ethereum, and 100+ altcoins with up to 125x leverage on Capitextradecompany Futures.
           </p>
           <Link
             href="/login"
@@ -91,7 +91,7 @@ export default function Futures() {
           whileInView={{ opacity: 1 }}
           className="text-4xl font-bold mb-12 text-center"
         >
-          Why Choose pulseMarket Futures?
+          Why Choose Capitextradecompany Futures?
         </motion.h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, i) => (
@@ -234,7 +234,7 @@ export default function Futures() {
         >
           <h2 className="text-4xl font-bold mb-6">Ready to Trade Futures?</h2>
           <p className="text-xl text-zinc-300 mb-8">
-            Join thousands of traders already using pulseMarket Futures.
+            Join thousands of traders already using Capitextradecompany Futures.
           </p>
           <Link
             href="/logout"
