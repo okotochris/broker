@@ -159,7 +159,7 @@ export default function TopCryptos() {
                         {coin.price_change_percentage_24h >= 0
                           ? <ArrowUpRight size={16} />
                           : <ArrowDownRight size={16} />}
-                        {coin.price_change_percentage_24h.toFixed(2)}%
+                        {coin.price_change_percentage_24h && coin.price_change_percentage_24h.toFixed(2)}%
                       </span>
                     </div>
 

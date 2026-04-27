@@ -75,8 +75,10 @@ export default function Header() {
 
   const navLinks = [
     { href: '/market', label: 'Markets' },
+    { href: '/plan', label: 'Plans' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
+
   ];
 
   return (

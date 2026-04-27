@@ -30,6 +30,7 @@ export default function MarketsSection() {
       );
 
       const data = await res.json();
+      console.log(data)
       setCoins(data);
     } catch (err) {
       console.error("Failed to load market data", err);
@@ -96,7 +97,7 @@ export default function MarketsSection() {
               }`}
             >
               {coin.price_change_percentage_24h > 0 ? '+' : ''}
-              {coin.price_change_percentage_24h.toFixed(2)}%
+              {coin.price_change_percentage_24h && coin.price_change_percentage_24h.toFixed(2)}%
             </div>
           </motion.div>
         ))}

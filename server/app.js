@@ -334,6 +334,7 @@ app.delete('/api/users/:id', async (req, res) => {
 // Get user by ID
 app.get('/api/user/:id', async (req, res) => {
   const { id } = req.params;
+  console.log(id)
   try {
     const user = await User.findById(id).select('-password -__v');
     if (!user) {

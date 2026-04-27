@@ -95,7 +95,7 @@ export default function FeaturedFeatures() {
                 </h3>
 
                 <p className="text-gray-400 leading-relaxed grow">
-                  {feature.description}
+                  {feature.description.slice(0, 100)} ....
                 </p>
 
                 {/* Subtle bottom accent line with arrow */}

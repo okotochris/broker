@@ -13,6 +13,7 @@ import SecuritySection from './component/security';
 import FeaturedFeatures from './component/feature';
 import Testimonials from './component/testimony';
 import TopCoinsSpotlight from './component/topcoins';
+import InvestmentPlans from './component/investment';
 
 // Fake live prices (in real app → fetch from backend / CoinGecko)
 const mockPrices = [
@@ -138,6 +139,7 @@ export default function Home() {
         </div>
       </motion.section>
       <TopCoinsSpotlight/>
+      <InvestmentPlans />
       <Testimonials />
       <Footer />
     </div>

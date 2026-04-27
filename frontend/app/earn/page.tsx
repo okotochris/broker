@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { TrendingUp, Zap, Shield, ArrowRight, Coins } from 'lucide-react';
+import Header from '../component/header';
+import Footer from '../component/footer';
 
 export default function Earn() {
   const opportunities = [
@@ -57,6 +59,7 @@ export default function Earn() {
 
   return (
     <div className="bg-black text-white overflow-hidden">
+      <Header/>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-20 pb-12 px-6">
         <motion.div
@@ -227,6 +230,7 @@ export default function Earn() {
           </Link>
         </motion.div>
       </section>
+      <Footer />
     </div>
   );
 }

@@ -39,9 +39,7 @@ export default function Footer() {
         >
           {/* Brand & Tagline */}
           <motion.div variants={childVariants} className="col-span-2 md:col-span-1">
-            <Link href="/" className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-              Capitextradecompany
-            </Link>
+              
             <p className="mt-4 text-zinc-500 text-sm leading-relaxed">
               Trade smarter. Grow faster. Secure crypto investments with real-time tools and institutional-grade security.
             </p>

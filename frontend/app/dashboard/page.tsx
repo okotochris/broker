@@ -15,6 +15,7 @@ import {
   Bitcoin,
   Coins,
   CreditCard,
+  LogOut
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -131,7 +132,8 @@ export default function Dashboard() {
     { id: 'markets', label: 'Markets', icon: BarChart3 },
     { id: 'alerts', label: 'Alerts', icon: Bell },
     { id: 'settings', label: 'Settings', icon: Settings },
-    { id: 'admin', label: 'Admin', icon: Wallet },
+    { id: 'logout', label: 'Logout', icon: LogOut },
+
   ];
 
   return (
@@ -164,8 +166,9 @@ export default function Dashboard() {
                 <button
                   key={item.id}
                   onClick={() => {
-                    if (item.id === 'admin') {
-                      window.location.href = '/admin';
+                    if (item.id === 'logout') {
+                      localStorage.clear()
+                      window.location.href = '/';
                       return;
                     }
                     setActiveTab(item.id);
