@@ -179,9 +179,9 @@ export default function Dashboard() {
 
                 {inv ? (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <AssetCard label="US Dollar" value={`$${inv.usdValue.toLocaleString()}`} icon={<DollarSign className="text-green-400" />} />
-                    <AssetCard label="Bitcoin" value={`${inv.btcValue.toFixed(6)} BTC`} subValue={`$${(inv.btcValue * prices.btc).toLocaleString()}`} icon={<Bitcoin className="text-orange-400" />} />
-                    <AssetCard label="Ethereum" value={`${inv.ethValue.toFixed(4)} ETH`} subValue={`$${(inv.ethValue * prices.eth).toLocaleString()}`} icon={<Coins className="text-purple-400" />} />
+                    <AssetCard label="US Dollar" value={`$${inv?.usdValue.toLocaleString() ?? 0}`} icon={<DollarSign className="text-green-400" />} />
+                    <AssetCard label="Bitcoin" value={`${inv?.btcValue.toFixed(6) ?? 0} BTC`} subValue={`$${(inv?.btcValue * prices?.btc).toLocaleString()}`} icon={<Bitcoin className="text-orange-400" />} />
+                    <AssetCard label="Ethereum" value={`${inv?.ethValue.toFixed(4) ?? 0} ETH`} subValue={`$${(inv?.ethValue * prices?.eth).toLocaleString()}`} icon={<Coins className="text-purple-400" />} />
                   </div>
                 ) : (
                   <div className="text-center py-10 text-zinc-500">No assets found.</div>
