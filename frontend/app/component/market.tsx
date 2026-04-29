@@ -67,7 +67,7 @@ export default function MarketsSection() {
             className="flex items-center justify-between bg-zinc-800 hover:bg-zinc-700 transition rounded-2xl p-1 md:p-4"
           >
             {/* Left: Icon + Name */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4">
               <img
                 src={coin.image}
                 alt={coin.name}
