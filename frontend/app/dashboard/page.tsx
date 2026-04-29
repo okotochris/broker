@@ -23,6 +23,7 @@ import MarketsSection from '../component/market';
 import UserSettings from '../component/userSetting';
 import TradeSection from '../component/trade';
 import InvestmentPopup from '../component/getRandomItem';
+import FancyLoader from '../component/loading';
 
 type Investment = {
   amountInvest: number;
@@ -107,7 +108,7 @@ export default function Dashboard() {
   ];
 
   if (loading) {
-    return <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-orange-500 font-bold">Loading...</div>;
+    return <div><FancyLoader fullScreen message="geting user ifo..." /> </div>
   }
 
   return (
