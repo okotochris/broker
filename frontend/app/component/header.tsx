@@ -177,22 +177,40 @@ export default function Header() {
                 </Link>
               ))}
 
-              <div className="flex flex-col items-center gap-6 mt-10">
+              {user ? 
+                <div className="flex flex-col items-center gap-6 mt-10">
+                <Link
+                  href="/dashboard"
+                  onClick={() => setIsOpen(false)}
+                  className="px-12 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-medium hover:brightness-110 transition-all text-xl shadow-lg shadow-purple-500/20"
+                >
+                  dashboard
+                </Link>
                 <Link
                   href="/login"
                   onClick={() => setIsOpen(false)}
                   className="px-10 py-4 rounded-full border border-zinc-600 text-zinc-200 hover:border-zinc-400 hover:text-white transition-all text-xl"
                 >
-                  Login
+                 logout
+                </Link>
+              </div>:
+              <div className="flex flex-col items-center gap-6 mt-10">
+              <Link
+                  href="/dashboard"
+                  onClick={() => setIsOpen(false)}
+                  className="px-10 py-4 rounded-full border border-zinc-600 text-zinc-200 hover:border-zinc-400 hover:text-white transition-all text-xl"
+                >
+                  Dashboard
                 </Link>
                 <Link
-                  href="/register"
+                  href="/signup"
                   onClick={() => setIsOpen(false)}
                   className="px-12 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-medium hover:brightness-110 transition-all text-xl shadow-lg shadow-purple-500/20"
                 >
                   Get Started
                 </Link>
               </div>
+              }
             </div>
           </motion.div>
         )}
