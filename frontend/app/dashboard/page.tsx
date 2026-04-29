@@ -185,7 +185,7 @@ export default function Dashboard() {
         ))}
         <button onClick={handleLogout} className="flex flex-col items-center gap-1 text-zinc-500">
           <LogOut className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Exit</span>
+          <span className="text-[10px] font-medium">Logout</span>
         </button>
       </nav>
 
