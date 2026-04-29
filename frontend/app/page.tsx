@@ -117,27 +117,49 @@ export default function Home() {
       </section>
 
       {/* CTA Footer-ish */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="py-24 border-t border-zinc-800/50 bg-gradient-to-b from-transparent to-zinc-950"
+     <motion.section
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+  className="py-24 border-t border-zinc-800/50 bg-gradient-to-b from-transparent to-zinc-950"
+>
+  <div className="max-w-6xl mx-auto px-6">
+    <div className="grid md:grid-cols-2 gap-12 items-center">
+      
+      {/* Left Side: Image */}
+      <motion.div 
+        initial={{ x: -20, opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="relative group"
       >
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">
-            Ready to Level Up Your Crypto Game?
-          </h2>
-          <p className="text-xl text-zinc-400 mb-12 max-w-2xl mx-auto">
-            Join thousands of traders already using Capitextradecompany to trade smarter.
-          </p>
-          <Link
-            href="/signin"
-            className="inline-flex items-center gap-3 px-10 py-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-xl font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-2xl shadow-purple-500/20"
-          >
-            Create Free Account <ArrowRight className="w-6 h-6" />
-          </Link>
-        </div>
-      </motion.section>
+        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+        <img 
+          src="/image10.jpg" 
+          alt="Crypto Trading" 
+          className="relative rounded-2xl border border-zinc-800 shadow-2xl w-full object-cover"
+        />
+      </motion.div>
+
+      {/* Right Side: Content */}
+      <div className="text-center md:text-left">
+        <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+          Ready to Level Up Your Crypto Game?
+        </h2>
+        <p className="text-xl text-zinc-400 mb-12 max-w-2xl">
+          Join thousands of traders already using Capitextradecompany to trade smarter.
+        </p>
+        <Link
+          href="/signin"
+          className="inline-flex items-center gap-3 px-10 py-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-xl font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-2xl shadow-purple-500/20"
+        >
+          Create Free Account <ArrowRight className="w-6 h-6" />
+        </Link>
+      </div>
+
+    </div>
+  </div>
+</motion.section>
       <TopCoinsSpotlight/>
       <InvestmentPlans />
       <Testimonials />
