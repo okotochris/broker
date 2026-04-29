@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import FancyLoader from './loading';
 
 // -----------------------------
 // 1. Strong TypeScript Type
@@ -47,11 +48,13 @@ export default function MarketsSection() {
   }, []);
 
   return (
-    <div className="bg-zinc-900 rounded-3xl p-6 md:p-8">
+    <div className="bg-zinc-900 rounded-3xl p-1 md:p-8">
       <h2 className="text-2xl font-semibold mb-6">Live Markets</h2>
 
       {!coins.length && (
-        <p className="text-zinc-500">Loading live market data...</p>
+        <div>
+          <FancyLoader fullScreen message="loading live market..." /> 
+        </div>
       )}
 
       <div className="space-y-4">
@@ -61,7 +64,7 @@ export default function MarketsSection() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.03 }}
-            className="flex items-center justify-between bg-zinc-800 hover:bg-zinc-700 transition rounded-2xl p-5"
+            className="flex items-center justify-between bg-zinc-800 hover:bg-zinc-700 transition rounded-2xl p-1 md:p-4"
           >
             {/* Left: Icon + Name */}
             <div className="flex items-center gap-4">
