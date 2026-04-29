@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import LoadingBar from '../component/loading';
+import FancyLoader from '../component/loading';
 
 
 export default function SignupPage() {
@@ -27,9 +28,7 @@ export default function SignupPage() {
     setError('')
 
     try{
-      if (step === 'form') {
-        // Request OTP
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/signup/request-otp`,{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/signup`,{
           method:"POST",
           headers:{
               'Content-Type':'application/json'
@@ -41,25 +40,11 @@ export default function SignupPage() {
             setError(data.message || 'An error occurred')
             return;
         }
-        setStep('otp')
-      } else {
-        // Verify OTP
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/signup/verify-otp`,{
-          method:"POST",
-          headers:{
-              'Content-Type':'application/json'
-          },
-          body:JSON.stringify({ email: form.email, otp: form.otp })
-        })
-        const data = await res.json()
-        if(!res.ok){
-            setError(data.message || 'An error occurred')
-            return;
-        }
-        localStorage.setItem('user', JSON.stringify(data.user))
-        router.push('/dashboard')
+      
+        localStorage.setItem('email', form.email)
+        router.push('/verify-email')
       }
-    }
+    
     catch(err){
         console.log(err)
         setError('Server error')
@@ -86,8 +71,8 @@ export default function SignupPage() {
         {/* Form */}
         <form className="space-y-5" onSubmit={handleUpload}>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-          {step === 'form' && (
-            <>
+          
+          
               {/* Name */}
               <div>
                 <label className="text-sm text-zinc-400">Full Name</label>
@@ -135,37 +120,6 @@ export default function SignupPage() {
                   </button>
                 </div>
               </div>
-            </>
-          )}
-
-          {step === 'otp' && (
-            <>
-              {/* Email (disabled) */}
-              <div>
-                <label className="text-sm text-zinc-400">Email</label>
-                <input
-                  value={form.email}
-                  type="email"
-                  disabled
-                  className="w-full  text-gray-500 mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl cursor-not-allowed"
-                />
-              </div>
-
-              {/* OTP */}
-              <div>
-                <label className="text-sm text-zinc-400">Verification Code</label>
-                <input
-                  value={form.otp}
-                  type="text"
-                  onChange={(e)=>setForm({...form, otp:e.target.value})}
-                  placeholder="Enter 6-digit code"
-                  maxLength={6}
-                  className="w-full  text-gray-300 mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
-                />
-              </div>
-            </>
-          )}
-
           {/* Sign Up Button */}
           <button
             type="submit"
@@ -173,7 +127,7 @@ export default function SignupPage() {
             className="w-full bg-orange-600 hover:bg-orange-700 transition py-3 rounded-2xl font-semibold flex items-center justify-center gap-2"
           >
             <UserPlus size={20} />
-            {isLoading ? <LoadingBar/> : step === 'form' ? "Send Verification Code" : "Verify & Create Account"}
+            {isLoading ? "Signing...": "Signing"}
           </button>
         </form>
         {/* Footer */}
@@ -184,6 +138,7 @@ export default function SignupPage() {
           </Link>
         </p>
       </div>
+      {isLoading && <FancyLoader fullScreen message="Signing in..." /> }
     </div>
   );
 }

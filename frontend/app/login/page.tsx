@@ -3,58 +3,39 @@
 import { useState } from 'react';
 import { LogIn } from 'lucide-react';
 import Link from 'next/link';
-import LoadingBar from '../component/loading';
+import { useRouter } from 'next/navigation';
+import FancyLoader from '../component/loading';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);  
-  const [step, setStep] = useState<'email' | 'otp'>('email');
   const [formData, setFormData] = useState({
     email: '',
-    otp: ''
+    password: ''
   });
   const [error, setError] = useState('');
+  const router = useRouter()
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError('');
-
     try {
-      if (step === 'email') {
         // Request OTP
-        const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/login/request-otp`, {
+        const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email: formData.email }),
+          body: JSON.stringify(formData),
         });
-
-        if (data.ok) {
-          setStep('otp');
-        } else {
-          const errorData = await data.json();
-          setError(errorData.message || 'Failed to send OTP');
-        }
-      } else {
-        // Verify OTP
-        const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/login/verify-otp`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: formData.email, otp: formData.otp }),
-        });
-
         if (data.ok) {
           const user = await data.json();
-          console.log('Login successful:', user);
           localStorage.setItem('user', JSON.stringify(user.user));
-          window.location.href = '/dashboard';
+          router.push('/dashboard')
         } else {
           const errorData = await data.json();
           setError(errorData.message || 'Invalid OTP');
         }
-      }
     } catch (err) {
       setError('An error occurred. Please try again.');
       console.error('Login failed:', err);
@@ -90,24 +71,18 @@ export default function LoginPage() {
               onChange={(e)=>setFormData({...formData, email:e.target.value})}
               placeholder="you@example.com"
               className="w-full  text-gray-300 mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
-              disabled={step === 'otp'}
+
+            />
+             <label className="text-sm text-zinc-400">Password</label>
+            <input
+              type="password"
+              value={formData.password}
+              onChange={(e)=>setFormData({...formData, password:e.target.value})}
+              placeholder="*********"
+              className="w-full  text-gray-300 mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
+             
             />
           </div>
-
-          {step === 'otp' && (
-            /* OTP */
-            <div>
-              <label className="text-sm text-zinc-400">OTP</label>
-              <input
-                type="text"
-                value={formData.otp}
-                onChange={(e)=>setFormData({...formData, otp:e.target.value})}
-                placeholder="Enter 6-digit OTP"
-                className="w-full  text-gray-300 mt-2 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-2xl focus:outline-none focus:border-orange-500"
-                maxLength={6}
-              />
-            </div>
-          )}
 
           {/* Login Button */}
           <button
@@ -116,7 +91,7 @@ export default function LoginPage() {
             className="w-full bg-orange-600 hover:bg-orange-700 transition py-3 rounded-2xl font-semibold flex items-center justify-center gap-2"
           >
             <LogIn size={20} />
-            {loading ? <LoadingBar /> : step === 'email' ? 'Send OTP' : 'Verify OTP'}
+           Login
           </button>
         </form>
 
@@ -129,6 +104,7 @@ export default function LoginPage() {
           </Link>
         </p>
       </div>
+      {loading && <FancyLoader fullScreen message="Signing in..." /> }
     </div>
   );
 }

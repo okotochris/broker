@@ -8,7 +8,7 @@ const userModel = new mongoose.Schema({
         type: String,
         default: 'user'
     },
-    investment:[
+    investment:
         {
         amountInvest:{
             type:Number,
@@ -31,15 +31,9 @@ const userModel = new mongoose.Schema({
             default:0
         }
         }
-    ],
+    ,
     privateKey:String,
     publicKey:String,
-    otp: String,
-    otpExpiry: Date,
-    verified: {
-        type: Boolean,
-        default: false
-    },
     
 }, {timestamps:true})
 

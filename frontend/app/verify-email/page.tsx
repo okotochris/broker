@@ -2,25 +2,27 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Mail, CheckCircle, ArrowRight, Clock, RotateCcw } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Mail, CheckCircle } from 'lucide-react';
+import { useEffect, useState} from 'react';
+import { useRouter } from 'next/navigation';
+import FancyLoader from '../component/loading';
 
 export default function VerifyEmail() {
   const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const [canResend, setCanResend] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [email, setEmail] = useState('')
   const [error, setError] = useState('');
+  const router = useRouter()
 
-  useEffect(() => {
-    if (!canResend && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (timeLeft === 0) {
-      setCanResend(true);
+  useEffect(()=>{
+    const userEmail = localStorage.getItem('email')
+    if(!userEmail){
+      router.push('/signup')
+      return
     }
-  }, [timeLeft, canResend]);
+    setEmail(userEmail)
+  },[])
+
 
   const handleCodeChange = (index: number, value: string) => {
     if (value.length > 1) return;
@@ -51,60 +53,37 @@ export default function VerifyEmail() {
       return;
     }
 
-    setIsLoading(true);
-    setError('');
+  setIsLoading(true);
+   try {
+  const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/signup/verify-otp`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    // Match the backend key 'otp'
+    body: JSON.stringify({ email: email, otp: code }) 
+  });
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsVerified(true);
-    }, 1500);
-  };
+  const userData = await data.json();
 
-  const handleResend = () => {
-    setCanResend(false);
-    setTimeLeft(60);
-    setVerificationCode(['', '', '', '', '', '']);
-    setError('');
-  };
-
-  if (isVerified) {
-    return (
-      <div className="bg-black text-white min-h-screen flex items-center justify-center px-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-md"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
-          >
-            <CheckCircle className="w-20 h-20 text-green-400 mx-auto" />
-          </motion.div>
-
-          <h1 className="text-4xl font-bold mb-4">Email Verified!</h1>
-          <p className="text-lg text-zinc-300 mb-8">
-            Your email has been successfully verified. You can now access your Capitextradecompany account and start trading.
-          </p>
-
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg font-semibold hover:brightness-110 transition"
-          >
-            Go to Dashboard
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-
-          <p className="text-sm text-zinc-500 mt-8">
-            Didn&apos;t mean to verify? <Link href="/contact" className="text-blue-400 hover:text-blue-300 transition">Contact support</Link>
-          </p>
-        </motion.div>
-      </div>
-    );
+  // Check if the HTTP status is in the 200-299 range
+  if (!data.ok) {
+    return setError(userData.message || "Invalid code");
   }
+
+  // Store only the user object, not the message
+  localStorage.setItem('user', JSON.stringify(userData));
+  router.push('/dashboard');
+
+  } catch (e) {
+    console.error(e);
+    setError('Server error');
+  }finally{
+      setIsLoading(false)
+    }
+    setError('');
+  };
+ 
 
   return (
     <div className="bg-black text-white min-h-screen flex items-center justify-center px-6">
@@ -123,11 +102,11 @@ export default function VerifyEmail() {
           >
             <Mail className="w-16 h-16 text-blue-400 mx-auto" />
           </motion.div>
-          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-3 bg-linear-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
             Verify Email
           </h1>
           <p className="text-zinc-300 text-sm">
-            We&apos;ve sent a 6-digit code to your email address. Please enter it below to verify your account.
+            We&apos;ve sent a 6-digit code to your email address. Please enter it below to verify your account {email}.
           </p>
         </div>
 
@@ -136,7 +115,7 @@ export default function VerifyEmail() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-8"
+          className="mb-8 text-center flex flex-col items-center justify-center"
         >
           <label className="block text-sm font-medium mb-4 text-zinc-300">
             Verification Code
@@ -176,7 +155,7 @@ export default function VerifyEmail() {
           transition={{ delay: 0.3 }}
           onClick={handleVerify}
           disabled={isLoading || verificationCode.some(d => !d)}
-          className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg font-semibold hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+          className="w-full py-3 bg-linear-to-r from-blue-600 to-cyan-600 rounded-lg font-semibold hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
         >
           {isLoading ? (
             <>
@@ -195,31 +174,7 @@ export default function VerifyEmail() {
           )}
         </motion.button>
 
-        {/* Resend Code */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8 text-center"
-        >
-          <p className="text-zinc-400 text-sm mb-4">Didn&apos;t receive the code?</p>
-          
-          {canResend ? (
-            <button
-              onClick={handleResend}
-              className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition font-medium"
-            >
-              <RotateCcw className="w-4 h-4" />
-              Resend Code
-            </button>
-          ) : (
-            <div className="inline-flex items-center gap-2 text-zinc-400">
-              <Clock className="w-4 h-4" />
-              <span>Resend in {timeLeft}s</span>
-            </div>
-          )}
-        </motion.div>
-
+       
         {/* Divider */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -258,6 +213,7 @@ export default function VerifyEmail() {
           </p>
         </motion.div>
       </motion.div>
+      {isLoading && <FancyLoader fullScreen message="Verifying your email..." /> }
     </div>
   );
 }
