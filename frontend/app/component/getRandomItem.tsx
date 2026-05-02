@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const names = [
   'Michael', 'Sarah', 'David', 'Daniel', 'John',
-  'Mary', 'James', 'Esther', 'Chris', 'Blessing'
+  'Mary', 'James', 'Esther', 'Johnson', 'Blessing'
 ];
 
 const locations = [
@@ -34,7 +34,7 @@ export default function InvestmentPopup() {
       const coin = getRandomItem(coins);
       const amount = getRandomAmount();
 
-      const text = `${name} from ${location} just invested $${amount} in ${coin}`;
+      const text = `${name} from ${location} just earned <br/> $${amount}`;
 
       setMessage(text);
       setVisible(true);
@@ -60,12 +60,14 @@ export default function InvestmentPopup() {
       {/* Header */}
       <div className="flex items-center gap-2 mb-1">
         <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-        <p className="text-xs text-zinc-300">Live Investment</p>
+        <p className="text-xs text-zinc-300">Eearning</p>
       </div>
 
       {/* Message */}
-      <p className="text-sm font-medium leading-snug">
-        {message}
+      <p 
+        dangerouslySetInnerHTML={{ __html: message || "" }}
+        className="text-sm font-medium leading-snug">
+        
       </p>
 
       {/* Badge */}
