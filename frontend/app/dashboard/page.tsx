@@ -5,15 +5,16 @@ import {
   Wallet,
   TrendingUp,
   BarChart3,
-  Bell,
   Settings,
   Plus,
-  ArrowUpRight,
   DollarSign,
   Bitcoin,
-  Coins,
   CreditCard,
-  LogOut
+  LogOut,
+  UserCog,
+  BadgeDollarSign,
+  ArrowUpRight,
+  Coins
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -22,6 +23,7 @@ import UserSettings from '../component/userSetting';
 import TradeSection from '../component/trade';
 import InvestmentPopup from '../component/getRandomItem';
 import FancyLoader from '../component/loading';
+import Header from '../component/header';
 
 type Investment = {
   amountInvest: number;
@@ -35,53 +37,80 @@ type UserData = {
   _id: string;
   name: string;
   investment: Investment;
+  accountType:string;
+  coin:string;
+  amountInvest:number
+  totalProfit:number
 };
 
 export default function Dashboard() {
   const [user, setUser] = useState<UserData | null>(null);
   const [activeTab, setActiveTab] = useState('portfolio');
   const [prices, setPrices] = useState<{ btc: number; eth: number }>({ btc: 0, eth: 0 });
+  const [coinValue, setCoinValue] = useState(0)
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchData() {
-      const storedUser = localStorage.getItem('user');
-      if (!storedUser) {
-        router.push('/login');
-        return;
-      }
-
-      const userData = JSON.parse(storedUser);
-      
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/${userData._id}`);
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data.user);
-        } else {
-          setUser(userData);
-        }
-      } catch (err) {
-        setUser(userData);
-      } finally {
-        setLoading(false);
-      }
-
-      try {
-        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
-        if (res.ok) {
-          const data = await res.json();
-          setPrices({ btc: data.bitcoin.usd, eth: data.ethereum.usd });
-        }
-      } catch (err) {
-        console.error('Price fetch error:', err);
-      }
+useEffect(() => {
+  async function fetchData() {
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      router.push('/login');
+      return;
     }
 
-    fetchData();
-  }, [router]);
+    const userData = JSON.parse(storedUser);
+    
+    try {
+      // 1. Fetch User Data
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/${userData._id}`);
+      
+      let currentUser = userData; // Default to local storage if API fails
+      if (res.ok) {
+        const userPayload = await res.json();
+        currentUser = userPayload.user;
+      }
+      
+      setUser(currentUser);
+      const totalAsset = (currentUser.amountInvest || 0) + (currentUser.totalProfit || 0);
 
+      // 2. Fetch Crypto Prices
+      const coinRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+      
+      if (coinRes.ok) {
+        const priceData = await coinRes.json(); // Use a unique name like priceData
+        const btcPrice = priceData.bitcoin.usd;
+        const ethPrice = priceData.ethereum.usd;
+
+        setPrices({ btc: btcPrice, eth: ethPrice });
+
+        // 3. Conversion Logic
+        if (currentUser.coin === "BTC") {
+          // If the user wants to see their value in BTC, we DIVIDE
+          let btcValue = totalAsset / btcPrice
+          btcValue = Number(btcValue.toFixed(3))
+          setCoinValue(btcValue);
+        } else if (currentUser.coin === "ETH") {
+          setCoinValue(totalAsset / ethPrice);
+        } else {
+          // Default: Show USD value (USDT is 1:1)
+          setCoinValue(totalAsset);
+        }
+      } else {
+        // If price fetch fails, at least show the USD value
+        setCoinValue(totalAsset);
+      }
+  
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setUser(userData);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  fetchData();
+}, [router]);
   const inv = user?.investment;
   const btcP = prices?.btc ?? 0;
   const ethP = prices?.eth ?? 0;
@@ -132,6 +161,7 @@ export default function Dashboard() {
 
         {/* Main Content Area */}
         <main className="w-full max-w-7xl px-4 md:px-8 pt-8 md:pt-10 pb-24 md:pb-10 mx-auto">
+         <Header/>
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-2xl font-semibold">Dashboard</h1>
@@ -141,17 +171,59 @@ export default function Dashboard() {
               <Plus className="w-4 h-4" /> Deposit
             </button>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <Card label="Total Balance" value={totalBalance} icon={<CreditCard className="w-5 h-5 text-blue-400" />} />
-            <Card label="Total Invested" value={totalInvested} icon={<DollarSign className="w-5 h-5 text-green-400" />} />
-            <Card label="Total Profit" value={totalProfit} isProfit icon={<TrendingUp className="w-5 h-5 text-orange-400" />} />
+          <div className='h-14'></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-7 flex items-center justify-between ">
+              <div className='flex items-center gap-4'>
+                <div className="p-2.5 rounded-xl bg-blue-400"><CreditCard/></div>
+                <div>
+                  <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-wider">Total Balance</p>
+                  <p className="text-xl font-bold mt-0.5">
+                    $ {(Number(user?.amountInvest || 0.00) + Number(user?.totalProfit || 0.00)).toLocaleString()}
+                  </p>
+                  
+                </div>
+              </div>
+              <div className='flex justify-center items-center gap-2'>
+                  <div className='p-2 bg-amber-700 rounded-full'>{user?.coin == "BTC" ? <Bitcoin className="text-black" />: <BadgeDollarSign className="text-black" />}</div> <p>{coinValue || 0.00} {user?.coin}</p>
+              </div>
+            </div>
+              
+            <div className="relative bg-white/5 border border-white/10 rounded-2xl p-5 flex items-center gap-4">
+              <div className="p-2.5 rounded-xl bg-yellow-600"><DollarSign/></div>
+              <div>
+                <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-wider">TOTAL INVESTED</p>
+                <p className='text-xl font-bold mt-0.5 '>$ {user?.amountInvest || 0.00} </p>
+                 
+              </div>
+              <DollarSign className='absolute right-3 opacity-25'/>
+            </div>
+            <div className="relative bg-white/5 border border-white/10 rounded-2xl p-5 flex items-center gap-4">
+              <div className="p-2.5 rounded-xl bg-green-600"><TrendingUp/></div>
+              <div>
+                <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-wider">TOTAL PROFIT</p>
+                <p className='text-xl font-bold mt-0.5 '>$ {user?.totalProfit || 0.00} </p>
+                 
+              </div>
+              <TrendingUp className='absolute right-3 opacity-25'/>
+            </div>
+            
+            <div className="relative bg-white/5 border border-white/10 rounded-2xl p-5 flex items-center gap-4">
+              <div className="p-2.5 rounded-xl bg-red-600"><UserCog/></div>
+              <div>
+                <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-wider">ACCOUNT TYPE</p>
+                <p className={`text-xl font-bold mt-0.5 ${user?.accountType ? (user?.accountType != 'Starter' ? 'text-green-400' : 'text-white') : 'text-white'}`}>{user?.accountType.toUpperCase()} </p>
+                 
+              </div>
+              <UserCog className='absolute right-3 opacity-25'/>
+            </div>
+            
           </div>
 
           <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-4 md:p-6">
             {activeTab === 'portfolio' && (
               <>
-                <div className="flex justify-between mb-6">
+                {/* <div className="flex justify-between mb-6">
                   <h2 className="text-lg font-semibold">Your Assets</h2>
                   <button onClick={() => setActiveTab('trade')} className="text-sm text-orange-400 flex items-center gap-1">
                     Trade <ArrowUpRight className="w-4 h-4" />
@@ -161,7 +233,7 @@ export default function Dashboard() {
                   <AssetCard label="US Dollar" value={`$${(inv?.usdValue ?? 0).toLocaleString()}`} icon={<DollarSign className="text-green-400" />} />
                   <AssetCard label="Bitcoin" value={`${(inv?.btcValue ?? 0).toFixed(6)} BTC`} subValue={`$${((inv?.btcValue ?? 0) * btcP).toLocaleString()}`} icon={<Bitcoin className="text-orange-400" />} />
                   <AssetCard label="Ethereum" value={`${(inv?.ethValue ?? 0).toFixed(4)} ETH`} subValue={`$${((inv?.ethValue ?? 0) * ethP).toLocaleString()}`} icon={<Coins className="text-purple-400" />} />
-                </div>
+                </div> */}
               </>
             )}
             {activeTab === 'markets' && <MarketsSection />}

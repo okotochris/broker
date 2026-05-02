@@ -3,20 +3,16 @@
 import { useEffect, useState } from 'react';
 import Header from '../component/header';
 
-// 1. Updated Type: Removed the array brackets
-type Investment = {
-  amountInvest: number;
-  totalProfit: number;
-  usdValue: number;
-  ethValue: number;
-  btcValue: number;
-};
-
 type User = {
   _id: string;
-  name: string;
   email: string;
-  investment?: Investment; // Changed from Investment[] to Investment
+  name: string;
+  accountType: string;
+  coin: string;
+  coinValue: number;
+  amountInvest: number;
+  password: string;
+  totalProfit: number;
 };
 
 export default function AdminUsersPage() {
@@ -77,36 +73,25 @@ export default function AdminUsersPage() {
     }
   }
 
-  // 2. Updated State Logic: Spread object instead of mapping array
-  function updateField(userId: string, field: keyof Investment, value: number) {
+  // Simplified Update Logic: Handles all top-level fields
+  function updateField(userId: string, field: keyof User, value: any) {
     setUsers((prev) =>
-      prev.map((user) => {
-        if (user._id !== userId) return user;
-        const current = user.investment || { usdValue: 0, btcValue: 0, ethValue: 0, amountInvest: 0, totalProfit: 0 };
-        return {
-          ...user,
-          investment: { 
-            ...current, 
-            [field]: value 
-          },
-        };
-      })
+      prev.map((u) => (u._id === userId ? { ...u, [field]: value } : u))
     );
   }
 
   async function saveUser(user: User) {
-    const inv = user.investment;
-    if (!inv) return;
-
     try {
       setSavingId(user._id);
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/users/${user._id}/sync-investment`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          usdValue: Number(inv.usdValue || 0),
-          btcValue: Number(inv.btcValue || 0),
-          ethValue: Number(inv.ethValue || 0),
+          password: user.password,
+          amountInvest: Number(user.amountInvest || 0),
+          totalProfit: Number(user.totalProfit || 0),
+          accountType: user.accountType,
+          coin:user.coin,
           btcPrice: prices.btc,
           ethPrice: prices.eth
         }),
@@ -115,7 +100,6 @@ export default function AdminUsersPage() {
       if (!res.ok) throw new Error('Update failed');
 
       setSuccess(`Updated ${user.email}`);
-      loadUsers(); 
     } catch (err) {
       setError('Save failed.');
     } finally {
@@ -128,12 +112,12 @@ export default function AdminUsersPage() {
     return (
       <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6">
         <div className="bg-white/5 border border-white/10 p-8 rounded-2xl w-full max-w-md">
-          <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+          <h1 className="text-2xl font-bold mb-6 text-center text-orange-500">Admin Login</h1>
           <form onSubmit={handleLogin} className="space-y-4">
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full p-3 rounded bg-zinc-900 border border-white/20" placeholder="Email" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-3 rounded bg-zinc-900 border border-white/20" placeholder="Password" />
-            {loginError && <p className="text-red-400">{loginError}</p>}
-            <button className="w-full py-3 bg-orange-500 rounded font-bold">Login</button>
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full p-3 rounded bg-zinc-900 border border-white/20 outline-none focus:border-orange-500" placeholder="Email" />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-3 rounded bg-zinc-900 border border-white/20 outline-none focus:border-orange-500" placeholder="Password" />
+            {loginError && <p className="text-red-400 text-sm">{loginError}</p>}
+            <button className="w-full py-3 bg-orange-600 hover:bg-orange-500 transition rounded font-bold">Login</button>
           </form>
         </div>
       </div>
@@ -145,45 +129,97 @@ export default function AdminUsersPage() {
       <Header />
       <div className="min-h-screen bg-zinc-950 text-white p-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">User Management</h1>
-          {success && <div className="p-3 bg-green-500/20 text-green-200 mb-4 rounded">{success}</div>}
-          <div className="overflow-x-auto border border-white/10 rounded-xl">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold">User Management</h1>
+            <div className="flex gap-4 text-xs font-mono text-zinc-400">
+              <span>BTC: ${prices.btc.toLocaleString()}</span>
+              <span>ETH: ${prices.eth.toLocaleString()}</span>
+            </div>
+          </div>
+
+          {success && <div className="p-3 bg-emerald-500/20 text-emerald-400 mb-4 rounded border border-emerald-500/20">{success}</div>}
+          {error && <div className="p-3 bg-red-500/20 text-red-400 mb-4 rounded border border-red-500/20">{error}</div>}
+
+          <div className="overflow-x-auto border border-white/10 rounded-2xl bg-white/5 backdrop-blur-md">
             <table className="min-w-full text-left">
-              <thead className="bg-white/5">
-                <tr>
+              <thead>
+                <tr className="bg-white/5 text-zinc-400 text-xs uppercase tracking-widest">
                   <th className="p-4">Email</th>
-                  <th className="p-4">USDT</th>
-                  <th className="p-4">BTC</th>
-                  <th className="p-4">ETH</th>
-                  <th className="p-4">Total Invested</th>
-                  <th className="p-4">Actions</th>
+                  <th className="p-4">Password</th>
+                  <th className="p-4">Total Invested ($)</th>
+                  <th className="p-4">Total Profit ($)</th>
+                  <th className="p-4">Account Type</th>
+                  <th className="p-4">coin Type</th>
+                  <th className="p-4 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {users.map((user) => {
-                  // 3. Render Logic: Access object directly
-                  const inv = user.investment || { usdValue: 0, btcValue: 0, ethValue: 0, amountInvest: 0 };
-                  return (
-                    <tr key={user._id} className="border-t border-white/10">
-                      <td className="p-4">{user.email}</td>
-                      <td className="p-4">
-                        <input type="number" value={inv.usdValue} onChange={(e) => updateField(user._id, 'usdValue', Number(e.target.value))} className="w-24 bg-zinc-900 p-1 rounded border border-white/10" />
-                      </td>
-                      <td className="p-4">
-                        <input type="number" step="0.000001" value={inv.btcValue} onChange={(e) => updateField(user._id, 'btcValue', Number(e.target.value))} className="w-24 bg-zinc-900 p-1 rounded border border-white/10" />
-                      </td>
-                      <td className="p-4">
-                        <input type="number" step="0.0001" value={inv.ethValue} onChange={(e) => updateField(user._id, 'ethValue', Number(e.target.value))} className="w-24 bg-zinc-900 p-1 rounded border border-white/10" />
-                      </td>
-                      <td className="p-4 text-orange-400 font-mono">${inv.amountInvest?.toLocaleString()}</td>
-                      <td className="p-4">
-                        <button onClick={() => saveUser(user)} className="bg-blue-600 px-4 py-1 rounded">
-                          {savingId === user._id ? '...' : 'Save'}
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
+              <tbody className="text-sm">
+                {users.map((user) => (
+                  <tr key={user._id} className="border-t border-white/10 hover:bg-white/[0.02] transition">
+                    <td className="p-4 font-medium">{user.email}</td>
+                    
+                    <td className="p-4">
+                      <input 
+                        type="text" 
+                        value={user.password || ''} 
+                        onChange={(e) => updateField(user._id, 'password', e.target.value)}
+                        className="w-32 bg-zinc-900 p-2 rounded border border-white/10 focus:border-blue-500 outline-none" 
+                      />
+                    </td>
+
+                    <td className="p-4">
+                      <input 
+                        type="number" 
+                        value={user.amountInvest || 0} 
+                        onChange={(e) => updateField(user._id, 'amountInvest', Number(e.target.value))} 
+                        className="w-32 bg-zinc-900 p-2 rounded border border-white/10 text-orange-400 font-bold" 
+                      />
+                    </td>
+
+                    <td className="p-4">
+                      <input 
+                        type="number" 
+                        value={user.totalProfit || 0} 
+                        onChange={(e) => updateField(user._id, 'totalProfit', Number(e.target.value))} 
+                        className="w-32 bg-zinc-900 p-2 rounded border border-white/10 text-emerald-400 font-bold" 
+                      />
+                    </td>
+
+                    <td className="p-4">
+                      <select 
+                        value={user.accountType || 'Starter'} 
+                        onChange={(e) => updateField(user._id, 'accountType', e.target.value)}
+                        className="w-32 bg-zinc-900 p-2 rounded border border-white/10 outline-none cursor-pointer"
+                      >
+                        <option value="Starter">Starter</option>
+                        <option value="Silver">Silver</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Platinum">Platinum</option>
+                        <option value="Vip elite">Vip elite</option>
+                      </select>
+                    </td>
+                     <td className="p-4">
+                      <select 
+                        value={user.coin || 'USDT'} 
+                        onChange={(e) => updateField(user._id, 'coin', e.target.value)}
+                        className="w-32 bg-zinc-900 p-2 rounded border border-white/10 outline-none cursor-pointer"
+                      >
+                        <option value="USDT">USDT</option>
+                        <option value="BTC">BTC</option>
+                        
+                      </select>
+                    </td>
+                    <td className="p-4 text-center">
+                      <button 
+                        onClick={() => saveUser(user)} 
+                        disabled={savingId === user._id}
+                        className="bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800/50 px-6 py-2 rounded-xl font-bold transition-all active:scale-95"
+                      >
+                        {savingId === user._id ? '...' : 'Save'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

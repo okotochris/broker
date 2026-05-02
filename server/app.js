@@ -22,52 +22,52 @@ mongoose.connect(mongoseString)
     console.log(err)
 })
 
-cron.schedule('0 0 * * 0', async () => {
-  try {
-    // 1. Fetch live prices
-    const priceRes = await fetch(
-      'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd'
-    );
+// cron.schedule('0 0 * * 0', async () => {
+//   try {
+//     // 1. Fetch live prices
+//     const priceRes = await fetch(
+//       'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd'
+//     );
 
-    let btcPrice = 0;
-    let ethPrice = 0;
+//     let btcPrice = 0;
+//     let ethPrice = 0;
 
-    if (priceRes.ok) {
-      const priceData = await priceRes.json();
-      btcPrice = priceData.bitcoin?.usd || 0;
-      ethPrice = priceData.ethereum?.usd || 0;
-    } else {
-      throw new Error('Could not fetch prices for profit calculation');
-    }
+//     if (priceRes.ok) {
+//       const priceData = await priceRes.json();
+//       btcPrice = priceData.bitcoin?.usd || 0;
+//       ethPrice = priceData.ethereum?.usd || 0;
+//     } else {
+//       throw new Error('Could not fetch prices for profit calculation');
+//     }
 
-    const users = await User.find();
+//     const users = await User.find();
 
-    for (const user of users) {
-      // 2. Access the investment object directly (No more array loop)
-      const inv = user.investment;
-      if (!inv) continue;
+//     for (const user of users) {
+//       // 2. Access the investment object directly (No more array loop)
+//       const inv = user.investment;
+//       if (!inv) continue;
 
-      // 3. Calculate the current USDT value of all holdings
-      const totalInvestedValue =
-        (inv.usdValue || 0) +
-        (inv.btcValue || 0) * btcPrice +
-        (inv.ethValue || 0) * ethPrice;
+//       // 3. Calculate the current USDT value of all holdings
+//       const totalInvestedValue =
+//         (inv.usdValue || 0) +
+//         (inv.btcValue || 0) * btcPrice +
+//         (inv.ethValue || 0) * ethPrice;
 
-      // 4. Calculate 12% profit based on that total value
-      const weeklyProfit = totalInvestedValue * 0.12;
+//       // 4. Calculate 12% profit based on that total value
+//       const weeklyProfit = totalInvestedValue * 0.12;
 
-      // 5. Add that profit to the existing totalProfit field
-      user.investment.totalProfit = (inv.totalProfit || 0) + weeklyProfit;
+//       // 5. Add that profit to the existing totalProfit field
+//       user.investment.totalProfit = (inv.totalProfit || 0) + weeklyProfit;
 
-      // 6. Save the user document
-      await user.save();
-    }
+//       // 6. Save the user document
+//       await user.save();
+//     }
 
-    console.log(`Weekly 12% profit processed for ${users.length} users.`);
-  } catch (err) {
-    console.error('Error in weekly profit cron job:', err);
-  }
-});
+//     console.log(`Weekly 12% profit processed for ${users.length} users.`);
+//   } catch (err) {
+//     console.error('Error in weekly profit cron job:', err);
+//   }
+// });
 
 
 app.post('/api/login', async (req, res) => {
@@ -75,17 +75,17 @@ app.post('/api/login', async (req, res) => {
 
   try {
     // 1. Find user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, password });
     if (!user) {
       // Use a generic message to prevent account enumeration
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // 2. Compare passwords
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
+    // // 2. Compare passwords
+    // const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    // if (!isPasswordCorrect) {
+    //   return res.status(401).json({ message: "Invalid email or password" });
+    // }
 
     // 3. Send back specific user data (EXCLUDE the password)
     res.status(200).json({ 
@@ -124,7 +124,7 @@ app.post('/api/signup', async (req, res) => {
      data:{
       name: fullname,
       email,
-      password: hashedPassword,
+      password,
       role:'user',
      }
     });
@@ -191,7 +191,7 @@ app.get('/api/dashboard', async (req, res) => {
 // Super Admin: list all users
 app.get('/api/users', async (req, res) => {
   try {
-    const users = await User.find().select('-password -__v');
+    const users = await User.find();
     res.status(200).json(users);
   } catch (err) {
     console.error(err);
@@ -202,34 +202,43 @@ app.get('/api/users', async (req, res) => {
 // Super Admin: update user balances (usdValue, btcValue, ethValue)
 app.put('/api/users/:id/sync-investment', async (req, res) => {
   const { id } = req.params;
-  // Get values and prices from the body
-  const { usdValue, btcValue, ethValue, btcPrice, ethPrice } = req.body;
+  const { 
+    password, 
+    amountInvest, 
+    totalProfit, 
+    accountType, 
+    coin // This is your string
+  } = req.body;
 
   try {
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // 1. Update the raw quantities (defaulting to current value if not provided)
-    user.investment.usdValue = Number(usdValue ?? user.investment.usdValue) || 0;
-    user.investment.btcValue = Number(btcValue ?? user.investment.btcValue) || 0;
-    user.investment.ethValue = Number(ethValue ?? user.investment.ethValue) || 0;
+    // 1. Update String fields
+    if (password !== undefined) user.password = password;
+    if (accountType !== undefined) user.accountType = accountType;
+    
+    // Explicitly update the coin string
+    if (coin !== undefined) user.coin = String(coin); 
 
-    // 2. Calculate Total Investment (USDT Value)
-    // We use || 0 to prevent NaN if prices aren't sent
-    const btcInUsdt = user.investment.btcValue * (Number(btcPrice) || 0);
-    const ethInUsdt = user.investment.ethValue * (Number(ethPrice) || 0);
-    const totalUsdtValue = user.investment.usdValue + btcInUsdt + ethInUsdt;
-
-    // 3. Only update amountInvest if we actually have prices to calculate a real value
-    if (btcPrice && ethPrice) {
-      user.investment.amountInvest = totalUsdtValue;
-    }
+    // 2. Update Numeric fields
+    user.amountInvest = Number(amountInvest ?? user.amountInvest) || 0;
+    user.totalProfit = Number(totalProfit ?? user.totalProfit) || 0;
 
     await user.save();
-    res.status(200).json({ message: 'Balance Updated', investment: user.investment });
+    
+    res.status(200).json({ 
+      message: 'User updated successfully', 
+      user: {
+        email: user.email,
+        coin: user.coin, // Verified as string
+        amountInvest: user.amountInvest,
+        totalProfit: user.totalProfit
+      }
+    });
 
   } catch (err) {
-    console.error(err);
+    console.error("Update Error:", err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -260,7 +269,6 @@ app.get('/api/user/:id', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     res.status(200).json({ user });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Unable to fetch user' });
@@ -268,7 +276,16 @@ app.get('/api/user/:id', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, ()=>{
+app.listen(PORT, async()=>{
     console.log(`App listening on ${PORT}`)
- 
+ // Upgrade all users to Starter
+await User.updateMany(
+  {},
+  {
+    $set: {
+      accountType: "Starter"
+    }
+  }
+);
+
 })

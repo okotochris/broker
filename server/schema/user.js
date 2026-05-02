@@ -8,6 +8,23 @@ const userModel = new mongoose.Schema({
         type: String,
         default: 'user'
     },
+    accountType:{
+        type:String,
+        default:"Starter"
+    },
+    coin:String,
+    coninValue:{
+        type:Number,
+        default:0.00
+    },
+     amountInvest:{
+        type:Number,
+        default:0.00
+    },
+    totalProfit:{
+        type:Number,
+        default:0.00
+    },
     investment:
         {
         amountInvest:{
