@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { TrendingUp, BarChart3, Zap, Shield, ArrowRight } from 'lucide-react';
+import InvestmentPopup from '../component/getRandomItem';
 
 export default function Futures() {
   const features = [
@@ -244,6 +245,7 @@ export default function Futures() {
           </Link>
         </motion.div>
       </section>
+      <InvestmentPopup />
     </div>
   );
 }

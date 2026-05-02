@@ -276,16 +276,6 @@ app.get('/api/user/:id', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, async()=>{
+app.listen(PORT, ()=>{
     console.log(`App listening on ${PORT}`)
- // Upgrade all users to Starter
-await User.updateMany(
-  {},
-  {
-    $set: {
-      accountType: "Starter"
-    }
-  }
-);
-
 })

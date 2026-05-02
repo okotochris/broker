@@ -185,7 +185,7 @@ useEffect(() => {
                 </div>
               </div>
               <div className='flex justify-center items-center gap-2'>
-                  <div className='p-2 bg-amber-700 rounded-full'>{user?.coin == "BTC" ? <Bitcoin className="text-black" />: <BadgeDollarSign className="text-black" />}</div> <p>{coinValue || 0.00} {user?.coin}</p>
+                  <div className='p-1 bg-amber-700 rounded-full'>{user?.coin == "BTC" ? <Bitcoin className="text-black" />: <BadgeDollarSign className="text-black" />}</div> <p>{coinValue || 0.00} {user?.coin}</p>
               </div>
             </div>
               

@@ -5,6 +5,7 @@ import { Mail, Phone, MapPin, Send, MessageSquare, Clock } from 'lucide-react';
 import { useState } from 'react';
 import Header from '../component/header';
 import Footer from '../component/footer';
+import InvestmentPopup from '../component/getRandomItem';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -312,6 +313,7 @@ export default function ContactPage() {
       </section>
 
       <Footer />
+      <InvestmentPopup />
     </div>
   );
 }

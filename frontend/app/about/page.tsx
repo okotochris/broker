@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Header from '../component/header';
 import Footer from '../component/footer';
 import Link from 'next/link';
+import InvestmentPopup from '../component/getRandomItem';
 
 export default function AboutPage() {
   const [currentCoinIndex, setCurrentCoinIndex] = useState(0);
@@ -441,6 +442,7 @@ export default function AboutPage() {
       </section>
 
       <Footer />
+      <InvestmentPopup />
     </div>
   );
 }
